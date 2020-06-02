@@ -8,10 +8,19 @@ import { HttpClient } from '@angular/common/http';
 })
 export class AppComponent {
 
-  photos = [];
+  photos: Object[] = [];
   
   constructor(http: HttpClient){
-    console.log(http);
+    
+    // observable do rxjs - observable - é lazy (precisa de um subscribe para ler)
+    // const observable = http.get('http://localhost:3000/flavio/photos');
+    // observable.subscribe();
+
+    http.get<Object[]>('http://localhost:3000/flavio/photos')
+        .subscribe(
+          photos => this.photos = photos, 
+          err => console.log(err) // segundo parametro é verif. de erro
+        );
     
   }
 }
