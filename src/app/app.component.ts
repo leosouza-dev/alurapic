@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { PhotoService } from './photos/photo/photo.service';
+import { Photo } from './photos/photo/photo';
 
 @Component({
   selector: 'app-root',
@@ -8,19 +9,9 @@ import { HttpClient } from '@angular/common/http';
 })
 export class AppComponent {
 
-  photos: Object[] = [];
+  photos: Photo[] = [];
   
-  constructor(http: HttpClient){
-    
-    // observable do rxjs - observable - é lazy (precisa de um subscribe para ler)
-    // const observable = http.get('http://localhost:3000/flavio/photos');
-    // observable.subscribe();
-
-    http.get<Object[]>('http://localhost:3000/flavio/photos')
-        .subscribe(
-          photos => this.photos = photos, 
-          err => console.log(err) // segundo parametro é verif. de erro
-        );
-    
+  constructor(photoService: PhotoService) {
+    photoService.listFromUser('flavio').subscribe(photos => this.photos = photos);
   }
 }
